@@ -1,0 +1,42 @@
+name: Bug Report
+description: Report a crash, incorrect conversion output, or UI issue in MELD.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting an issue in MELD! Please avoid attaching sensitive private files.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform / Repository
+      options:
+        - Android (meld-android)
+        - macOS (meld-mac)
+        - Organization / CI (.github)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App Version & OS
+      placeholder: e.g. MELD v2.1.0 on Android 15 / macOS 15.1
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Open tool ...
+        2. Load file type ...
+        3. Tap action ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs. Actual Behavior
+    validations:
+      required: true

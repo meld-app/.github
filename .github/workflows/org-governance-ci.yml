@@ -1,0 +1,60 @@
+name: Org Governance & Health CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify Governance Docs, CODEOWNERS & YAML Templates
+        run: |
+          python3 - <<'EOF'
+          import os, yaml
+
+          required_files = [
+              "profile/README.md",
+              "assets/MELDLogo.png",
+              "GOVERNANCE.md",
+              "SECURITY.md",
+              "CONTRIBUTING.md",
+              "CODE_OF_CONDUCT.md",
+              "SUPPORT.md",
+              "CODEOWNERS",
+              ".github/PULL_REQUEST_TEMPLATE.md",
+              ".github/ISSUE_TEMPLATE/bug_report.yml",
+              ".github/ISSUE_TEMPLATE/feature_request.yml",
+              ".github/ISSUE_TEMPLATE/config.yml",
+          ]
+          for path in required_files:
+              assert os.path.isfile(path), f"Missing required file: {path}"
+              assert os.path.getsize(path) > 0, f"Empty required file: {path}"
+
+          codeowners = open("CODEOWNERS", encoding="utf-8").read()
+          assert "* @omrajput14" in codeowners, "CODEOWNERS must designate * @omrajput14"
+
+          for ypath in (
+              ".github/ISSUE_TEMPLATE/bug_report.yml",
+              ".github/ISSUE_TEMPLATE/feature_request.yml",
+              ".github/ISSUE_TEMPLATE/config.yml",
+          ):
+              with open(ypath, encoding="utf-8") as f:
+                  parsed = yaml.safe_load(f)
+              assert isinstance(parsed, dict) and parsed, f"Invalid YAML in {ypath}"
+
+          print(f"Verified {len(required_files)} governance/community-health artifacts successfully.")
+          EOF

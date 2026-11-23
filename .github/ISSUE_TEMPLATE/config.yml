@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability Disclosure
+    url: https://github.com/meld-app/.github/blob/main/SECURITY.md
+    about: Please report security issues privately using SECURITY.md instead of public issues.
+  - name: Support & Release Verification
+    url: https://github.com/meld-app/.github/blob/main/SUPPORT.md
+    about: Check APK SHA-256 verification and general help resources.
